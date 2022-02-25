@@ -49,6 +49,7 @@ class AjaxDatatableView(View):
     table_row_id_fieldname = 'pk'
     render_row_details_template_name = 'render_row_details.html'
     search_values_separator = ''  # '+'
+    limit = 100000000  ####setting a limit here
 
     # Set with self.initialize()
     column_specs = []  # used to keep column ording as required
@@ -550,7 +551,8 @@ class AjaxDatatableView(View):
                 pass
             else:
                 qs = self.optimize_queryset(qs)
-        qs = self.prepare_queryset(params, qs)
+        limit = self.limit ####setting a limit here
+        qs = self.prepare_queryset(params, qs)[:limit]   ####setting a limit here
         if TRACE_QUERYSET:
             prettyprint_queryset(qs)
 
@@ -714,7 +716,7 @@ class AjaxDatatableView(View):
             if row_id:
                 # "Automatic addition of row ID attributes"
                 # https://datatables.net/examples/server_side/ids.html
-                retdict['DT_RowId'] = row_id
+                retdict['DT_RowId'] = row_id  + str(draw_idx) #########ADDED DRAW IDX HERE SO THE KEY WOULD BE UNIQUE#########
 
             json_data.append(retdict)
         return json_data
@@ -726,7 +728,7 @@ class AjaxDatatableView(View):
         elif page_id < 1:
             page_id = 1
 
-        objects = self.prepare_results(request, paginator.page(page_id))
+        objects = self.prepare_results(request, paginator.page(page_id), draw_idx)  #########ADDED DRAW IDX HERE#########
 
         return {"draw": draw_idx,
                 "recordsTotal": paginator.count,
