@@ -698,7 +698,7 @@ class AjaxDatatableView(View):
         for name, max_length in rows:
             retdict[name] = self.clip_value(str(retdict[name]), max_length, True)
 
-    def prepare_results(self, request, qs):
+    def prepare_results(self, request, qs, draw_idx):  #########ADDED DRAW IDX HERE SO THE KEY WOULD BE UNIQUE#########
         json_data = []
         columns = [c['name'] for c in self.column_specs]
         for cur_object in qs:
