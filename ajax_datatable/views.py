@@ -808,6 +808,7 @@ class AjaxDatatableView(View):
 
         # (1) use select_related() to reduce the number of queries
         if select_related and not self.disable_queryset_optimization_select_related:
+            select_related = fields = [field.name for field in self.model._meta.fields if field.get_internal_type() == 'ForeignKey'] #~Testing
             qs = qs.select_related(*select_related)
         # (2) use prefetch_related() to optimize the numbers of queries
         if prefetch_related and not self.disable_queryset_optimization_prefetch_related:
