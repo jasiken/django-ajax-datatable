@@ -560,9 +560,11 @@ class AjaxDatatableView(View):
         # paginator = Paginator(qs, params['length'] if params['length'] != -1 else qs.count())
         if params['length'] == -1:
             # fix: prevent ZeroDivisionError
-            paginator = Paginator(qs, max(1, qs.count()))
+            print('in -1')
+            paginator = Paginator(qs.order_by(), max(1, qs.count()))
         else:
-            paginator = Paginator(qs, params['length'])
+            paginator = Paginator(qs.order_by(), params['length'])
+            print('in other')
         response_dict = self.get_response_dict(request, paginator, params['draw'], params['start'])
         response_dict['footer_message'] = self.footer_message(qs, params)
 
