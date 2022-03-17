@@ -561,9 +561,6 @@ class AjaxDatatableView(View):
         if params['length'] == -1:
             # fix: prevent ZeroDivisionError
             paginator = Paginator(qs, max(1, qs.count()))
-            print('in here')
-            print(qs.count().query)
-            print(qs.count().explain())
         else:
             paginator = Paginator(qs, params['length'])
         response_dict = self.get_response_dict(request, paginator, params['draw'], params['start'])
