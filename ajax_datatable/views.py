@@ -564,7 +564,7 @@ class AjaxDatatableView(View):
             paginator = Paginator(qs, max(1, qs.count()))
         else:
             paginator = Paginator(qs, params['length'])
-            paginator.count = qs.order_by().count()[:limit] 
+            paginator.count = qs.order_by()[:limit].count()
         response_dict = self.get_response_dict(request, paginator, params['draw'], params['start'])
         response_dict['footer_message'] = self.footer_message(qs, params)
 
