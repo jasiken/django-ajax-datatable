@@ -552,7 +552,7 @@ class AjaxDatatableView(View):
             else:
                 qs = self.optimize_queryset(qs)
         limit = self.limit ####setting a limit here
-        qs = self.prepare_queryset(params, qs)[:limit]   ####setting a limit here
+        qs = self.prepare_queryset(params, qs)   ####setting a limit here
         if TRACE_QUERYSET:
             prettyprint_queryset(qs)
 
@@ -561,9 +561,9 @@ class AjaxDatatableView(View):
         if params['length'] == -1:
             # fix: prevent ZeroDivisionError
             print('in -1')
-            paginator = Paginator(qs.order_by(), max(1, qs.count()))
+            paginator = Paginator(qs.order_by()[:limit], max(1, qs.count()))
         else:
-            paginator = Paginator(qs.order_by(), params['length'])
+            paginator = Paginator(qs.order_by()[:limit], params['length'])
             print('in other')
         response_dict = self.get_response_dict(request, paginator, params['draw'], params['start'])
         response_dict['footer_message'] = self.footer_message(qs, params)
