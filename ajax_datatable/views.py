@@ -718,7 +718,7 @@ class AjaxDatatableView(View):
             if row_id:
                 # "Automatic addition of row ID attributes"
                 # https://datatables.net/examples/server_side/ids.html
-                retdict['DT_RowId'] = row_id  + str(draw_idx) #########ADDED DRAW IDX HERE SO THE KEY WOULD BE UNIQUE#########
+                retdict['DT_RowId'] = row_id  + str(draw_idx).replace('&', '') #########ADDED DRAW IDX HERE SO THE KEY WOULD BE UNIQUE#########
 
             json_data.append(retdict)
         return json_data
